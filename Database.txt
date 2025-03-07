@@ -1,0 +1,32 @@
+create database biblioteca;
+-- Criar o banco de dados
+CREATE DATABASE biblioteca;
+
+-- Conectar ao banco de dados biblioteca
+\c biblioteca;
+
+-- Tabela para armazenar os livros
+CREATE TABLE livros (
+                        id SERIAL PRIMARY KEY,            -- ID único para cada livro
+                        titulo VARCHAR(255) NOT NULL,     -- Título do livro
+                        autor VARCHAR(255) NOT NULL,      -- Autor do livro
+                        preco DECIMAL(10, 2) NOT NULL,    -- Preço do livro
+                        tipo VARCHAR(50) NOT NULL,        -- Tipo do livro (LivroFisico ou Ebook)
+                        disponivel BOOLEAN DEFAULT TRUE   -- Disponibilidade do livro
+);
+
+-- Tabela para armazenar detalhes dos livros físicos
+CREATE TABLE livros_fisicos (
+                                livro_id INT PRIMARY KEY,         -- ID do livro, chave estrangeira
+                                peso DECIMAL(10, 2) NOT NULL,     -- Peso do livro físico
+                                tipo_capa VARCHAR(50),            -- Tipo de capa do livro (ex: brochura, capa dura)
+                                FOREIGN KEY (livro_id) REFERENCES livros(id) ON DELETE CASCADE
+);
+
+-- Tabela para armazenar detalhes dos eBooks
+CREATE TABLE ebooks (
+                        livro_id INT PRIMARY KEY,         -- ID do livro, chave estrangeira
+                        tamanho_arquivo DECIMAL(10, 2) NOT NULL,   -- Tamanho do arquivo do eBook (em MB)
+                        formato VARCHAR(50),              -- Formato do eBook (ex: PDF, EPUB)
+                        FOREIGN KEY (livro_id) REFERENCES livros(id) ON DELETE CASCADE
+);
